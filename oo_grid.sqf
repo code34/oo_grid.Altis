@@ -28,11 +28,15 @@
 		PRIVATE VARIABLE("scalar","xsector");
 		PRIVATE VARIABLE("scalar","ysector");
 		PRIVATE VARIABLE("array","gridmarker");
+		PRIVATE VARIABLE("array","playersector");
+		PRIVATE VARIABLE("bool","monitored");
 
 		PUBLIC FUNCTION("array","constructor") {
 			private["_array"];
 			_array = [];
 			MEMBER("gridmarker", _array);
+			MEMBER("playersector", _array);
+			MEMBER("monitored", false);
 			MEMBER("xsize", _this select 0);
 			MEMBER("ysize", _this select 1);
 			MEMBER("xsector", _this select 2);
@@ -142,8 +146,31 @@
 			[_x,_y];
 		};
 
+		PUBLIC FUNCTION("", "Monitor") {
+			private ["_playersector", "_position"];
+			MEMBER("monitored", true);
+			while { MEMBER("monitored", nil) } do {
+				_playersector = [];
+				{
+					_position = MEMBER("getSectorFromPos", _x);
+					_playersector = _playersector + [_position];
+					sleep 0.1;
+				}foreach playableunits;
+				MEMBER("playersector", _playersector);
+				sleep 10;
+			};
+			_playersector = [];
+			MEMBER("playersector", _playersector);
+		};
+
+		PUBLIC FUNCTION("", "UnMonitor") {
+			MEMBER("monitored", false);
+		};
+
 		PUBLIC FUNCTION("","deconstructor") { 
+			DELETE_VARIABLE("playersector");
 			DELETE_VARIABLE("gridmarker");
+			DELETE_VARIABLE("monitored");
 			DELETE_VARIABLE("xstart");
 			DELETE_VARIABLE("ystart");
 			DELETE_VARIABLE("xsize");
