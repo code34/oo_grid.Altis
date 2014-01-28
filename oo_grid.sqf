@@ -30,6 +30,7 @@
 		PRIVATE VARIABLE("array","gridmarker");
 		PRIVATE VARIABLE("array","playersector");
 		PRIVATE VARIABLE("bool","monitored");
+		PRIVATE VARIABLE("bool","printed");
 
 		PUBLIC FUNCTION("array","constructor") {
 			private["_array"];
@@ -37,6 +38,7 @@
 			MEMBER("gridmarker", _array);
 			MEMBER("playersector", _array);
 			MEMBER("monitored", false);
+			MEMBER("printed", false);
 			MEMBER("xsize", _this select 0);
 			MEMBER("ysize", _this select 1);
 			MEMBER("xsector", _this select 2);
@@ -116,11 +118,8 @@
 			_sectorperline = MEMBER("xsize", nil) / MEMBER("xsector", nil);
 			_xpos = floor((_position select 0) / MEMBER("xsector", nil));
 			_ypos = floor((_position select 1) / MEMBER("ysector", nil));
-
 			_index = _xpos + (_ypos * _sectorperline);
-			_size = MEMBER("xsector", nil);
-			_position = MEMBER("getPosFromSector", _index);
-			_position;
+			_index;
 		};
 
 		PUBLIC FUNCTION("object", "getSectorAround") {
@@ -167,10 +166,24 @@
 			MEMBER("monitored", false);
 		};
 
+
+		PUBLIC FUNCTION("", "Print") {
+			MEMBER("printed", true);
+			while { MEMBER("printed", nil) } do {
+				hint format["Players Sector: %1", MEMBER("playersector", nil)];
+				sleep 1;
+			};
+		};
+
+		PUBLIC FUNCTION("", "UnPrinted") {
+			MEMBER("printed", false);
+		};
+
 		PUBLIC FUNCTION("","deconstructor") { 
 			DELETE_VARIABLE("playersector");
 			DELETE_VARIABLE("gridmarker");
 			DELETE_VARIABLE("monitored");
+			DELETE_VARIABLE("printed");
 			DELETE_VARIABLE("xstart");
 			DELETE_VARIABLE("ystart");
 			DELETE_VARIABLE("xsize");
