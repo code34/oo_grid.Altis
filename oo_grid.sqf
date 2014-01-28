@@ -143,6 +143,7 @@
 		};
 
 		PUBLIC FUNCTION("","deconstructor") { 
+			DELETE_VARIABLE("gridmarker");
 			DELETE_VARIABLE("xstart");
 			DELETE_VARIABLE("ystart");
 			DELETE_VARIABLE("xsize");
