@@ -1,6 +1,6 @@
 	/*
 	Author: code34 nicolas_boiteux@yahoo.fr
-	Copyright (C) 2013 Nicolas BOITEUX
+	Copyright (C) 2014 Nicolas BOITEUX
 
 	OO GRID-  object oriented strategic GRID
 	
