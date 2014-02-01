@@ -70,6 +70,7 @@
 		PUBLIC FUNCTION("","getYsize") FUNC_GETVAR("ysize");
 		PUBLIC FUNCTION("","getXsector") FUNC_GETVAR("xsector");
 		PUBLIC FUNCTION("","getYsector") FUNC_GETVAR("ysector");
+		PUBLIC FUNCTION("","getPlayersector") FUNC_GETVAR("playersector");
 
 		PUBLIC FUNCTION("", "Draw") {
 			private["_index", "_marker", "_y", "_x", "_position", "_gridmarker"];
