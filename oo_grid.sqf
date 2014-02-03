@@ -2,7 +2,7 @@
 	Author: code34 nicolas_boiteux@yahoo.fr
 	Copyright (C) 2014 Nicolas BOITEUX
 
-	GRID - strategic grid
+	OO GRID - STRATEGIC GRID
 	
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
