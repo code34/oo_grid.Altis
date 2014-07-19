@@ -132,17 +132,22 @@
 			[_xpos, _ypos];
 		};
 
-		PUBLIC FUNCTION("object", "getSectorAround") {
-			private ["_index", "_grid", "_sector", "_sectorperline"];
-			_sector = MEMBER("getSectorFromPos", position _this);
-			_sectorperline = MEMBER("ysize", nil)/MEMBER("xsector", nil);
-			_index = [(_sector - (_sectorperline + 1)), (_sector - _sectorperline), (_sector - (_sectorperline - 1)), (_sector -1), _sector, (_sector + 1), (_sector + (_sectorperline - 1)), (_sector + _sectorperline), (_sector + (_sectorperline + 1))];
-			_grid = [];
-			{
-				_size = MEMBER("xsector", nil);
-				_position = MEMBER("getPosFromSector", _x);
-				_grid = _grid + [_position];
-			}foreach _index;
+		PUBLIC FUNCTION("array", "getSectorAround") {
+			private ["_grid", "_sector"];
+
+			_sector = _this;	
+			
+			_grid = [
+				[(_sector select 0) - 1, (_sector select 1) - 1],
+				[(_sector select 0), (_sector select 1) - 1],
+				[(_sector select 0) + 1, (_sector select 1) - 1],
+				[(_sector select 0) - 1, (_sector select 1)],
+				[(_sector select 0), (_sector select 1)],
+				[(_sector select 0) + 1, (_sector select 1)],
+				[(_sector select 0) - 1, (_sector select 1) + 1],
+				[(_sector select 0), (_sector select 1) + 1],
+				[(_sector select 0) +1, (_sector select 1) + 1]
+			];
 			_grid;
 		};
 
