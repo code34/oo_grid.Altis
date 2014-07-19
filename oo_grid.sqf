@@ -21,6 +21,7 @@
 	#include "oop.h"
 
 	CLASS("OO_GRID")
+		PRIVATE VARIABLE("scalar","markerindex");
 		PRIVATE VARIABLE("scalar","xstart");
 		PRIVATE VARIABLE("scalar","ystart");
 		PRIVATE VARIABLE("scalar","xsize");
@@ -35,6 +36,7 @@
 		PUBLIC FUNCTION("array","constructor") {
 			private["_array"];
 			_array = [];
+			MEMBER("markerindex", 0);
 			MEMBER("gridmarker", _array);
 			MEMBER("playersector", _array);
 			MEMBER("monitored", false);
@@ -111,6 +113,38 @@
 			MEMBER("gridmarker", _gridmarker);
 		};
 
+		PUBLIC FUNCTION("array", "DrawSector") {
+			private ["_index", "_gridmarker", "_marker", "_sector"];
+
+			_sector = _this;
+			_index = MEMBER("markerindex", nil);
+			_gridmarker = MEMBER("gridmarker", nil);
+
+			_position = MEMBER("getPosFromSector", _sector);
+
+			_marker = createMarker [format["mrk_text_%1", _index], _position];
+			_marker setMarkerShape "ICON";
+			_marker setMarkerType "mil_triangle";
+			_marker setmarkerbrush "Solid";
+			_marker setmarkercolor "ColorBlack";
+			_marker setmarkersize [0.5,0.5];
+
+			_marker setmarkertext format["%1", _sector];
+			_gridmarker = _gridmarker + [_marker];
+		
+			_marker = createMarker [format["mrk_grid_%1", _index], _position];
+			_marker setMarkerShape "RECTANGLE";
+			_marker setMarkerType "mil_triangle";
+			_marker setmarkerbrush "Border";
+			_marker setmarkercolor "ColorBlack";
+			_marker setmarkersize [(MEMBER("xsector", nil)/2),(MEMBER("ysector", nil)/2)];
+			_gridmarker = _gridmarker + [_marker];
+
+			_index = _index + 1;
+			MEMBER("gridmarker", _gridmarker);
+			MEMBER("markerindex", _index);
+		};
+
 		PUBLIC FUNCTION("", "UnDraw") {
 			private["_array"];
 			{
@@ -157,6 +191,48 @@
 			[_x,_y];
 		};
 
+		PUBLIC FUNCTION("array", "getNextSector") {
+			private ["_currentsector", "_dx", "_dy", "_goalsector", "_neighbors", "_nextsector", "_performance", "_position"];
+
+			_currentsector = _this select 0;	
+			_goalsector = _this select 1;
+
+			_neighbors = MEMBER("getSectorAround", _currentsector);
+
+			_performance = 1000000;
+			{				
+				_position = MEMBER("getPosFromSector", _x);
+				if!(surfaceIsWater _position) then {
+					_dx = abs((_x select 0) - (_goalsector select 0));
+					_dy = abs((_x select 1) - (_goalsector select 1));
+					if (_dx + _dy < _performance) then {
+						_performance = _dx + _dy;
+						_nextsector = _x;
+					};
+				};
+				sleep 0.001;
+			}foreach _neighbors;
+
+			_nextsector;
+		};
+
+		PUBLIC FUNCTION("array", "getPathToSector") {
+			private ["_array", "_sectors", "_currentsector", "_goalsector"];
+
+			_currentsector = _this select 0;	
+			_goalsector = _this select 1;
+			_sectors = [];
+
+			while { format["%1", _currentsector] != format["%1", _goalsector] } do {
+				_sectors = _sectors + [_currentsector];
+				_array = [_currentsector, _goalsector];
+				_currentsector = MEMBER("getNextSector", _array);
+				["DrawSector", _currentsector] call _grid;
+				sleep 0.001;
+			};
+			_sectors;
+		};
+
 		PUBLIC FUNCTION("", "Monitor") {
 			private ["sector", "_sectors"];
 			MEMBER("monitored", true);
@@ -192,6 +268,7 @@
 		};
 
 		PUBLIC FUNCTION("","deconstructor") { 
+			DELETE_VARIABLE("markerindex");
 			DELETE_VARIABLE("playersector");
 			DELETE_VARIABLE("gridmarker");
 			DELETE_VARIABLE("monitored");

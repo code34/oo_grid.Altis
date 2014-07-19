@@ -2,9 +2,13 @@
 
 		_grid = ["new", [31000,31000,500,500]] call OO_GRID;
 
-		toto = ["getSectorFromPos", position player] call _grid;
-		toto = ["getSectorAround", toto] call _grid;
+		_sector = ["getSectorFromPos", position player] call _grid;
+		_goal = [54,50];
 
-		sleep 2;
+		_array = [_sector, _goal];
+		_path = ["getPathToSector", _array] call _grid;
 
-		hintc format["%1", toto];
+		{
+			["DrawSector", _x] call _grid;
+		}foreach _path;
+
