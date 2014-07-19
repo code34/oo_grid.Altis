@@ -72,25 +72,33 @@
 		PUBLIC FUNCTION("","getYsector") FUNC_GETVAR("ysector");
 		PUBLIC FUNCTION("","getPlayersector") FUNC_GETVAR("playersector");
 
-		PUBLIC FUNCTION("", "Draw") {
-			private["_index", "_marker", "_y", "_x", "_position", "_gridmarker"];
-			_index = 0;
+		PUBLIC FUNCTION("string", "Draw") {
+
+			private["_index", "_marker", "_y", "_x", "_position", "_gridmarker", "_sector"];
+
 			MEMBER("xstart", MEMBER("xsector", nil) / 2);
 			MEMBER("ystart", MEMBER("ysector", nil) / 2);
+
+			_index = 0;
 			_gridmarker = MEMBER("gridmarker", nil);
 
 			for "_y" from MEMBER("ystart", nil) to MEMBER("ysize", nil) step MEMBER("ysector", nil) do {
 				for "_x" from MEMBER("xstart", nil) to MEMBER("xsize", nil) step MEMBER("xsector", nil) do {
-					_marker = createMarker [format["mrk_text_%1", _index], [_x, _y]];
+
+					_position = [_x, _y];
+					_sector = MEMBER("getSectorFromPos", _position);
+
+					_marker = createMarker [format["mrk_text_%1", _index], _position];
 					_marker setMarkerShape "ICON";
 					_marker setMarkerType "mil_triangle";
 					_marker setmarkerbrush "Solid";
 					_marker setmarkercolor "ColorBlack";
 					_marker setmarkersize [0.5,0.5];
-					_marker setmarkertext format["%1", _index];
+
+					_marker setmarkertext format["%1", _sector];
 					_gridmarker = _gridmarker + [_marker];
 		
-					_marker = createMarker [format["mrk_grid_%1", _index], [_x, _y]];
+					_marker = createMarker [format["mrk_grid_%1", _index], _position];
 					_marker setMarkerShape "RECTANGLE";
 					_marker setMarkerType "mil_triangle";
 					_marker setmarkerbrush "Border";
@@ -113,14 +121,15 @@
 		};
 
 		// Return sector where is object
-		PUBLIC FUNCTION("object", "getSectorFromPos") {
-			private ["_index", "_position", "_xpos", "_ypos", "_sector", "_size"];
-			_position = position _this;
-			_sectorperline = MEMBER("xsize", nil) / MEMBER("xsector", nil);
+		PUBLIC FUNCTION("array", "getSectorFromPos") {
+			private ["_position", "_xpos", "_ypos"];
+
+			_position = _this;
+
 			_xpos = floor((_position select 0) / MEMBER("xsector", nil));
 			_ypos = floor((_position select 1) / MEMBER("ysector", nil));
-			_index = _xpos + (_ypos * _sectorperline);
-			_index;
+
+			[_xpos, _ypos];
 		};
 
 		PUBLIC FUNCTION("object", "getSectorAround") {
@@ -137,30 +146,32 @@
 			_grid;
 		};
 
-		PUBLIC FUNCTION("scalar", "getPosFromSector") {		
-			private ["_sector", "_sectorline", "_x", "_y"];
+		PUBLIC FUNCTION("array", "getPosFromSector") {		
+			private ["_sector", "_x", "_y"];
+
 			_sector = _this;
-			_sectorperline = MEMBER("xsize", nil) / MEMBER("xsector", nil);
-			_y = (floor(_sector / _sectorperline) * MEMBER("ysector", nil)) + (MEMBER("ysector", nil) / 2);
-			_x = ((_sector mod _sectorperline) * MEMBER("xsector", nil)) + (MEMBER("xsector", nil) / 2);
+
+			_x = ((_sector select 0) * MEMBER("xsector", nil)) + (MEMBER("xsector", nil) / 2);
+			_y = ((_sector select 1) * MEMBER("ysector", nil)) + (MEMBER("ysector", nil) / 2);
+
 			[_x,_y];
 		};
 
 		PUBLIC FUNCTION("", "Monitor") {
-			private ["_playersector", "_position"];
+			private ["sector", "_sectors"];
 			MEMBER("monitored", true);
 			while { MEMBER("monitored", nil) } do {
-				_playersector = [];
+				_sectors = [];
 				{
-					_position = MEMBER("getSectorFromPos", _x);
-					_playersector = _playersector + [_position];
+					_sector = MEMBER("getSectorFromPos", position _x);
+					_sectors = _sectors + [sector];
 					sleep 0.1;
 				}foreach playableunits;
-				MEMBER("playersector", _playersector);
+				MEMBER("playersector", _sectors);
 				sleep 10;
 			};
-			_playersector = [];
-			MEMBER("playersector", _playersector);
+			_sectors = [];
+			MEMBER("playersector", _sectors);
 		};
 
 		PUBLIC FUNCTION("", "UnMonitor") {
