@@ -141,7 +141,7 @@
 				[(_sector select 0), (_sector select 1) - 1],
 				[(_sector select 0) - 1, (_sector select 1)],
 				[(_sector select 0) + 1, (_sector select 1)],
-				[(_sector select 0), (_sector select 1) + 1],
+				[(_sector select 0), (_sector select 1) + 1]
 			];
 			_grid;
 		};
