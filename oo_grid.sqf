@@ -191,6 +191,18 @@
 			[_x,_y];
 		};
 
+		PUBLIC FUNCTION("array", "GetEstimateCost") {
+			private ["_start", "_dx", "_dy", "_goalsector"];
+
+			_start = _this select 0;	
+			_goal = _this select 1;
+
+			_dx = abs((_start select 0) - (_goal select 0));
+			_dy = abs((_start select 1) - (_goal select 1));
+
+			(_dx + _dy);
+		};
+
 		PUBLIC FUNCTION("array", "getNextSector") {
 			private ["_currentsector", "_dx", "_dy", "_goalsector", "_neighbors", "_nextsector", "_performance", "_position"];
 
