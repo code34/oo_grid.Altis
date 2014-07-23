@@ -154,6 +154,31 @@
 			MEMBER("gridmarker", _array);			
 		};
 
+
+		// call a loopback parsing function and return sectors that are concerned
+		// example of string parameter
+		// _function = "isBuilding";
+		// retur sector with buildings
+
+		PUBLIC FUNCTION("string", "parseAllSectors") {
+			private["_array", "_function", "_position", "_result", "_sector", "_x", "_y"];
+
+			_function = _this;
+			_array = [];
+
+			for "_y" from MEMBER("ystart", nil) to MEMBER("ysize", nil) step MEMBER("ysector", nil) do {
+				for "_x" from MEMBER("xstart", nil) to MEMBER("xsize", nil) step MEMBER("xsector", nil) do {
+					_position = [_x, _y];
+					_sector = MEMBER("getSectorFromPos", _position);
+					if(MEMBER(_function, _sector)) then {
+						_array = _array + [_sector];
+					};
+					//hint format["%1 %2 %3", _array, _function, _sector];
+				};
+			};
+			_array;
+		};
+
 		// Return sector where is object
 		PUBLIC FUNCTION("array", "getSectorFromPos") {
 			private ["_position", "_xpos", "_ypos"];
@@ -179,6 +204,43 @@
 			];
 			_grid;
 		};
+
+		PUBLIC FUNCTION("array", "addSucessor") {
+			private ["_grid", "_position", "_sector"];
+
+			_sector = _this;
+			_grid = MEMBER("getSectorAround", _sector);
+			
+			{
+				_position = MEMBER("getPosFromSector", _x);
+				if!(surfaceIsWater _position) then {
+					_cost = 10;
+				} else {
+					_cost = 1;
+				};
+			}foreach _grid;
+		};
+
+		PUBLIC FUNCTION("array", "isBuilding") {
+			private ["_index", "_buildings", "_position", "_positions", "_result"];
+
+			_sector = _this;
+			_position = MEMBER("getPosFromSector", _sector);
+
+			_buildings = nearestObjects[_position,["House_F"], MEMBER("xsector", nil)];
+			_positions = [];
+
+			{
+				_index = 0;
+				while { format ["%1", _x buildingPos _index] != "[0,0,0]" } do {
+					_positions = _positions + [(_x buildingPos _index)];
+					_index = _index + 1;
+				};
+			}foreach _buildings;
+			if (count _positions > 4) then { _result = true;} else { _result = false;};
+			_result;
+		};
+
 
 		PUBLIC FUNCTION("array", "getPosFromSector") {		
 			private ["_sector", "_x", "_y"];
