@@ -192,18 +192,37 @@
 		};
 
 		PUBLIC FUNCTION("array", "getSectorAround") {
-			private ["_grid", "_sector"];
+			private ["_grid", "_params", "_sector"];
 
 			_sector = _this;	
+			_params = [_sector, 1];
 			
-			_grid = [
-				[(_sector select 0), (_sector select 1) - 1],
-				[(_sector select 0) - 1, (_sector select 1)],
-				[(_sector select 0) + 1, (_sector select 1)],
-				[(_sector select 0), (_sector select 1) + 1]
-			];
+			_grid = MEMBER("getSectorAllAround", _params);
+
 			_grid;
 		};
+
+		PUBLIC FUNCTION("array", "getSectorAllAround") {
+			private ["_grid", "_scale", "_sector", "_botx", "_boty", "_topx", "_topy", "_x", "_y"];
+
+			_sector = _this select 0;
+			_scale = _this select 1;
+
+			_botx = (_sector select 0) - _scale;
+			_boty = (_sector select 1) - _scale;
+			_topx = (_sector select 0) + _scale;
+			_topy = (_sector select 1) + _scale;
+
+			_grid = [];
+			
+			for "_y" from _boty to _topy do {
+				for "_x" from _botx to _topx do {
+					_grid = _grid + [[_x, _y]];
+				};
+			};
+			_grid;
+		};
+
 
 		PUBLIC FUNCTION("array", "addSucessor") {
 			private ["_grid", "_position", "_sector"];
@@ -226,18 +245,20 @@
 
 			_sector = _this;
 			_position = MEMBER("getPosFromSector", _sector);
-
-			_buildings = nearestObjects[_position,["House_F"], MEMBER("xsector", nil)];
 			_positions = [];
-
-			{
-				_index = 0;
-				while { format ["%1", _x buildingPos _index] != "[0,0,0]" } do {
-					_positions = _positions + [(_x buildingPos _index)];
-					_index = _index + 1;
-				};
-			}foreach _buildings;
-			if (count _positions > 4) then { _result = true;} else { _result = false;};
+			
+			if!(surfaceIsWater _position) then {
+				_buildings = nearestObjects[_position,["House_F"], MEMBER("xsector", nil)];
+	
+				{
+					_index = 0;
+					while { format ["%1", _x buildingPos _index] != "[0,0,0]" } do {
+						_positions = _positions + [(_x buildingPos _index)];
+						_index = _index + 1;
+					};
+				}foreach _buildings;
+			};
+			if (count _positions > 10) then { _result = true;} else { _result = false;};
 			_result;
 		};
 
