@@ -43,8 +43,15 @@
 		PUBLIC FUNCTION("","getY") FUNC_GETVAR("y");
 
 
+		PUBLIC FUNCTION("array", "getTotalCost") {
+			private ["_cost"];
+			_cost = MEMBER("cost", nil) + MEMBER("getEstimateCost", []);
+			_cost;
+		};
+
+
 		// Estimation of the cost between current node and goal node
-		PUBLIC FUNCTION("", "getEstimateCost") {
+		PUBLIC FUNCTION("array", "getEstimateCost") {
 			private ["_x", "_y", "_dx", "_dy"];
 
 			_x = "getX" call MEMBER("goal", nil);
