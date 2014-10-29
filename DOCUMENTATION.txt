@@ -42,23 +42,6 @@
 	
 */
 
-/*
-	Function: = ["Draw"] spawn _grid;
-	Draw the grid object
-	
-	Parameters:
-		none
-	
-*/
-
-/*
-	Function: ["UnDraw"] spawn _grid;
-	Un Draw the grid object
-	
-	Parameters:
-		none
-	
-*/
 
 /*
 	Function: ["getSectorFromPos", object] spawn _grid;
