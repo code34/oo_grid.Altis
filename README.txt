@@ -31,6 +31,7 @@
 	You can share, modify, distribute this script but don't remove the licence and the name of the original author
 
 	logs:
+		0.2 - Make arma not war contest
 		0.1 - OO GRID - first release
 
 
