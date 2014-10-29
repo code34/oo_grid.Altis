@@ -19,17 +19,15 @@
 	*/
 
 
-
-
 /*
-	Function: _grid = ["new", [SCxmapsize,SCymapsize,SCxsectorsize,SCysectorsize]] call OO_GRID;
+	Function: _grid = ["new", [xmapsize,ymapsize,xsectorsize,ysectorsize]] call OO_GRID;
 	Create a new grid object
 	
 	Parameters:
-		SCxmapsize - X map size
-		SCymapsize - Y map size
-		SCxsectorsize - X sector size
-		SCysectorsize - X sector size
+		xmapsize - X map size
+		ymapsize - Y map size
+		xsectorsize - X sector size
+		ysectorsize - X sector size
 	
 */
 
@@ -42,33 +40,71 @@
 	
 */
 
-
 /*
-	Function: ["getSectorFromPos", object] spawn _grid;
-	Get index of sector from position
+	Function: ["parseAllSectors", string] spawn _grid;
+	Parse all sectors of grid with a function call that returns true or false
 	
 	Parameters:
-		object - position of the object (unit, vehicle, etc) will be use to find the index
+		string - function name
+	
+*/
+
+
+/*
+	Function: ["getSectorFromPos", array] spawn _grid;
+	Get sector from a position
+	
+	Parameters:
+		array - position
 	
 */
 
 /*
-	Function: ["getSectorAround", object] spawn _grid;
-	Get index of all sector around the sector (3x3 sectors)
+	Function: ["getSectorAround", array] spawn _grid;
+	Get an array of sectors all around the sector (3x3 sectors)
 	
 	Parameters:
-		object - position of the object (unit, vehicle, etc) will be use to find the index
+		array - sector position
 	
 */
 
 /*
-	Function: ["getPosFromSector", SCindex] spawn _grid;
-	Get a position from an index
+	Function: ["getCenterPos", array] spawn _grid;
+	Get center position of a sector with a position
 	
 	Parameters:
-		SCindex - index to convert to a position
+		array - position
+
+*/
+
+/*
+	Function: ["getSectorAllAround", array] spawn _grid;
+	Get an array of sectors all around the sector at x scales (scale x scale sectors)
+	
+	Parameters:
+		array 
+			- sector position
+			- scale
+
 	
 */
 
+/*
+	Function: ["getSectorCrossAround", array] spawn _grid;
+	Get an array of cross sectors all around the sector 2 horizontals + 2 verticals + 1 center
+	
+	Parameters:
+		array - sector position
+
+*/
+
+/*
+	Function: ["getPosFromSector", array] spawn _grid;
+	Get a position from a sector
+	
+	Parameters:
+		array - sector position
+	
+*/
 
 
