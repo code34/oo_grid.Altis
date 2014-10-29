@@ -1,4 +1,4 @@
-﻿	/*
+	/*
 	Author: code34 nicolas_boiteux@yahoo.fr
 	Copyright (C) 2014 Nicolas BOITEUX
 
@@ -149,6 +149,7 @@
 			private["_array"];
 			{
 				deletemarker _x;
+				sleep 0.0001;
 			}foreach MEMBER("gridmarker", nil);
 			_array = [];
 			MEMBER("gridmarker", _array);			
@@ -191,6 +192,13 @@
 			[_xpos, _ypos];
 		};
 
+		PUBLIC FUNCTION("array", "getMiddlePos") {
+			_position = _this;
+			_sector = MEMBER("getSectorFromPos", _position);
+			_position = MEMBER("getPosFromSector", _sector);
+			_position;
+		};
+
 		PUBLIC FUNCTION("array", "getSectorAround") {
 			private ["_grid", "_params", "_sector"];
 
@@ -201,6 +209,21 @@
 
 			_grid;
 		};
+
+		PUBLIC FUNCTION("array", "getSectorCrossAround") {
+			private ["_grid", "_sector"];
+
+			_sector = _this select 0;
+
+			_grid = [
+				[(_sector select 0), (_sector select 1) - 1],
+				[(_sector select 0)-1, (_sector select 1)],
+				[(_sector select 0)+1, (_sector select 1)],
+				[(_sector select 0), (_sector select 1) + 1]
+				];
+			_grid;
+		};
+
 
 		PUBLIC FUNCTION("array", "getSectorAllAround") {
 			private ["_grid", "_scale", "_sector", "_botx", "_boty", "_topx", "_topy", "_x", "_y"];
@@ -237,10 +260,20 @@
 				} else {
 					_cost = 1;
 				};
+				sleep 0.0001;
 			}foreach _grid;
 		};
 
 		PUBLIC FUNCTION("array", "isBuilding") {
+			private ["_positions", "_result"];
+
+			_sector = _this;
+			_positions = MEMBER("getPositionsBuilding", _sector);
+			if (count _positions > 10) then { _result = true;} else { _result = false;};
+			_result;
+		};
+
+		PUBLIC FUNCTION("array", "getPositionsBuilding") {
 			private ["_index", "_buildings", "_position", "_positions", "_result"];
 
 			_sector = _this;
@@ -255,11 +288,12 @@
 					while { format ["%1", _x buildingPos _index] != "[0,0,0]" } do {
 						_positions = _positions + [(_x buildingPos _index)];
 						_index = _index + 1;
+						sleep 0.0001;
 					};
+					sleep 0.0001;
 				}foreach _buildings;
 			};
-			if (count _positions > 10) then { _result = true;} else { _result = false;};
-			_result;
+			_positions;
 		};
 
 
@@ -305,7 +339,7 @@
 						_nextsector = _x;
 					};
 				};
-				sleep 0.001;
+				sleep 0.0001;
 			}foreach _neighbors;
 
 			_nextsector;
@@ -323,7 +357,7 @@
 				_array = [_currentsector, _goalsector];
 				_currentsector = MEMBER("getNextSector", _array);
 				["DrawSector", _currentsector] call _grid;
-				sleep 0.001;
+				sleep 0.0001;
 			};
 			_sectors;
 		};
@@ -336,7 +370,7 @@
 				{
 					_sector = MEMBER("getSectorFromPos", position _x);
 					_sectors = _sectors + [sector];
-					sleep 0.1;
+					sleep 0.0001;
 				}foreach playableunits;
 				MEMBER("playersector", _sectors);
 				sleep 10;
