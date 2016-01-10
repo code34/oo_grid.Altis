@@ -77,8 +77,9 @@
 		PUBLIC FUNCTION("","getYsectorsize") FUNC_GETVAR("ysectorsize");
 
 		/* 
+		Validate
 		Call a loopback parsing function and return sectors that are concerned
-		Example of string parameter: "isBuilding" will return sector wihi buildings
+		Example of string parameter: "isBuilding" will return sector with buildings
 		*/ 
 		PUBLIC FUNCTION("string", "parseAllSectors") {
 			private["_array", "_function", "_position", "_result", "_sector", "_x", "_y"];
@@ -144,7 +145,8 @@
 		};
 
 		/*
-		Get all sectors around a sector
+		Validate
+		Get all sectors around one sector
 		Return : array containing all sectors
 		*/		
 		PUBLIC FUNCTION("array", "getSectorAround") {
@@ -159,13 +161,14 @@
 
 		
 		/*
+		Validate
 		Get cross sectors around a sector
 		Return : array containing all sectors
 		*/
 		PUBLIC FUNCTION("array", "getSectorCrossAround") {
 			private ["_grid", "_sector"];
 
-			_sector = _this select 0;
+			_sector = _this;
 
 			_grid = [
 				[(_sector select 0), (_sector select 1) - 1],
@@ -177,6 +180,7 @@
 		};
 
 		/*
+		Validate
 		Get all sectors around a sector at scale sector distance
 		Return : array containing all sectors
 		*/
@@ -202,6 +206,7 @@
 		};
 
 		/*
+		Validate
 		Check if there is buildings in the sector
 		Return : boolean
 		*/		
@@ -215,6 +220,7 @@
 		};
 
 		/*
+		Validate
 		Retrieve indexed building in the sector position
 		Return : array containing all positions in building
 		*/
