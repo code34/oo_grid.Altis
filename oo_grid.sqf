@@ -1,6 +1,6 @@
 	/*
 	Author: code34 nicolas_boiteux@yahoo.fr
-	Copyright (C) 2014 Nicolas BOITEUX
+	Copyright (C) 2014-2016 Nicolas BOITEUX
 
 	CLASS OO_GRID STRATEGIC GRID
 	
@@ -21,66 +21,70 @@
 	#include "oop.h"
 
 	CLASS("OO_GRID")
-		PRIVATE VARIABLE("scalar","xstart");
-		PRIVATE VARIABLE("scalar","ystart");
-		PRIVATE VARIABLE("scalar","xsize");
-		PRIVATE VARIABLE("scalar","ysize");
-		PRIVATE VARIABLE("scalar","xsector");
-		PRIVATE VARIABLE("scalar","ysector");
+		PRIVATE VARIABLE("scalar","xmaporigin");
+		PRIVATE VARIABLE("scalar","ymaporigin");
+		PRIVATE VARIABLE("scalar","xmapsize");
+		PRIVATE VARIABLE("scalar","ymapsize");
+		PRIVATE VARIABLE("scalar","xsectorsize");
+		PRIVATE VARIABLE("scalar","ysectorsize");
 
 		PUBLIC FUNCTION("array","constructor") {
-			MEMBER("xsize", _this select 0);
-			MEMBER("ysize", _this select 1);
-			MEMBER("xsector", _this select 2);
-			MEMBER("ysector", _this select 3);
-			MEMBER("xstart", MEMBER("xsector", nil) / 2);
-			MEMBER("ystart", MEMBER("ysector", nil) / 2);
+			private ["_xmaporigin", "_ymaporigin"];
+
+			_xmaporigin = (_this select 0) + ((_this select 2) / 2);
+			_ymaporigin = (_this select 1) + ((_this select 3) / 2);
+
+			MEMBER("xmaporigin", _xmaporigin);
+			MEMBER("ymaporigin", _ymaporigin);
+			MEMBER("xmapsize", _this select 2);
+			MEMBER("ymapsize", _this select 3);
+			MEMBER("xsectorsize", _this select 4);
+			MEMBER("ysectorsize", _this select 5);
 		};
 
-		PUBLIC FUNCTION("scalar","setXstart") {
-			MEMBER("xstart", _this);
+		PUBLIC FUNCTION("scalar","setXmaporigin") {
+			MEMBER("xmaporigin", _this);
 		};
 
-		PUBLIC FUNCTION("scalar","setYstart") {
-			MEMBER("ystart", _this);
+		PUBLIC FUNCTION("scalar","setYmaporigin") {
+			MEMBER("ymaporigin", _this);
 		};
 
-		PUBLIC FUNCTION("scalar","setXsize") {
-			MEMBER("xsize", _this);
+		PUBLIC FUNCTION("scalar","setXmapsize") {
+			MEMBER("xmapsize", _this);
 		};
 
-		PUBLIC FUNCTION("scalar","setYsize") {
-			MEMBER("ysize", _this);
+		PUBLIC FUNCTION("scalar","setYmapsize") {
+			MEMBER("ymapsize", _this);
 		};
 
-		PUBLIC FUNCTION("scalar","setXsector") {
-			MEMBER("xsector", _this);
+		PUBLIC FUNCTION("scalar","setXsectorsize") {
+			MEMBER("xsectorsize", _this);
 		};
 
-		PUBLIC FUNCTION("scalar","setYsector") {
-			MEMBER("ysector", _this);
+		PUBLIC FUNCTION("scalar","setYsectorsize") {
+			MEMBER("ysectorsize", _this);
 		};
 
-		PUBLIC FUNCTION("","getXstart") FUNC_GETVAR("xstart");
-		PUBLIC FUNCTION("","getYstart") FUNC_GETVAR("ystart");
-		PUBLIC FUNCTION("","getXsize") FUNC_GETVAR("xsize");
-		PUBLIC FUNCTION("","getYsize") FUNC_GETVAR("ysize");
-		PUBLIC FUNCTION("","getXsector") FUNC_GETVAR("xsector");
-		PUBLIC FUNCTION("","getYsector") FUNC_GETVAR("ysector");
+		PUBLIC FUNCTION("","getXmaporigin") FUNC_GETVAR("xmaporigin");
+		PUBLIC FUNCTION("","getYmaporigin") FUNC_GETVAR("ymaporigin");
+		PUBLIC FUNCTION("","getXmapsize") FUNC_GETVAR("xmapsize");
+		PUBLIC FUNCTION("","getYmapsize") FUNC_GETVAR("ymapsize");
+		PUBLIC FUNCTION("","getXsectorsize") FUNC_GETVAR("xsectorsize");
+		PUBLIC FUNCTION("","getYsectorsize") FUNC_GETVAR("ysectorsize");
 
-		// call a loopback parsing function and return sectors that are concerned
-		// example of string parameter
-		// _function = "isBuilding";
-		// retur sector with buildings
-
+		/* 
+		Call a loopback parsing function and return sectors that are concerned
+		Example of string parameter: "isBuilding" will return sector wihi buildings
+		*/ 
 		PUBLIC FUNCTION("string", "parseAllSectors") {
 			private["_array", "_function", "_position", "_result", "_sector", "_x", "_y"];
 
 			_function = _this;
 			_array = [];
 
-			for "_y" from MEMBER("ystart", nil) to MEMBER("ysize", nil) step MEMBER("ysector", nil) do {
-				for "_x" from MEMBER("xstart", nil) to MEMBER("xsize", nil) step MEMBER("xsector", nil) do {
+			for "_y" from MEMBER("ymaporigin", nil) to MEMBER("ymapsize", nil) step MEMBER("ysectorsize", nil) do {
+				for "_x" from MEMBER("xmaporigin", nil) to MEMBER("xmapsize", nil) step MEMBER("xsectorsize", nil) do {
 					_position = [_x, _y];
 					_sector = MEMBER("getSectorFromPos", _position);
 					if(MEMBER(_function, _sector)) then {
@@ -91,18 +95,23 @@
 			_array;
 		};
 
-		// Return sector from a position 
+		/*
+		Translate a position into a sector
+		*/
 		PUBLIC FUNCTION("array", "getSectorFromPos") {
 			private ["_position", "_xpos", "_ypos"];
 
 			_position = _this;
 
-			_xpos = floor((_position select 0) / MEMBER("xsector", nil));
-			_ypos = floor((_position select 1) / MEMBER("ysector", nil));
+			_xpos = floor(((_position select 0) - MEMBER("xmaporigin",nil)) / MEMBER("xsectorsize", nil));
+			_ypos = floor(((_position select 1) - MEMBER("ymaporigin",nil)) / MEMBER("ysectorsize", nil));
 			[_xpos, _ypos];
 		};
 
-		// Return position center of the sector
+		/*
+		Get the center of a sector from the position of the sector
+		Return the center of a sector from a position
+		*/
 		PUBLIC FUNCTION("array", "getCenterPos") {
 			private ["_position", "_sector"];			
 
@@ -113,7 +122,10 @@
 			_position;
 		};
 
-		// Return an array of adjacent sectors around one sector
+		/*
+		Get all sectors around a sector
+		Return : array containing all sectors
+		*/		
 		PUBLIC FUNCTION("array", "getSectorAround") {
 			private ["_grid", "_params", "_sector"];
 
@@ -124,7 +136,11 @@
 			_grid;
 		};
 
-		// Return an array of adjacent cross sectors around one sector
+		
+		/*
+		Get cross sectors around a sector
+		Return : array containing all sectors
+		*/
 		PUBLIC FUNCTION("array", "getSectorCrossAround") {
 			private ["_grid", "_sector"];
 
@@ -139,7 +155,10 @@
 			_grid;
 		};
 
-		// Return an array of adjacent sectors at x sector distance around one sector
+		/*
+		Get all sectors around a sector at scale sector distance
+		Return : array containing all sectors
+		*/
 		PUBLIC FUNCTION("array", "getSectorAllAround") {
 			private ["_grid", "_scale", "_sector", "_botx", "_boty", "_topx", "_topy", "_x", "_y"];
 
@@ -161,7 +180,10 @@
 			_grid;
 		};
 
-		// Return if there is building in the sector
+		/*
+		Check if there is buildings in the sector
+		Return : boolean
+		*/		
 		PUBLIC FUNCTION("array", "isBuilding") {
 			private ["_positions", "_result"];
 
@@ -171,7 +193,10 @@
 			_result;
 		};
 
-		// Parse indexed building at sector position
+		/*
+		Retrieve indexed building in the sector position
+		Return : array containing all positions in building
+		*/
 		PUBLIC FUNCTION("array", "getPositionsBuilding") {
 			private ["_index", "_buildings", "_position", "_positions", "_result"];
 
@@ -180,7 +205,7 @@
 			_positions = [];
 			
 			if!(surfaceIsWater _position) then {
-				_buildings = nearestObjects[_position,["House_F"], MEMBER("xsector", nil)];
+				_buildings = nearestObjects[_position,["House_F"], MEMBER("xsectorsize", nil)];
 	
 				{
 					_index = 0;
@@ -195,80 +220,27 @@
 			_positions;
 		};
 
-		// Return a position from a sector
+		/*
+		Get the position from a sector
+		Return : array position of the sector
+		*/
 		PUBLIC FUNCTION("array", "getPosFromSector") {		
 			private ["_sector", "_x", "_y"];
 
 			_sector = _this;
 
-			_x = ((_sector select 0) * MEMBER("xsector", nil)) + (MEMBER("xsector", nil) / 2);
-			_y = ((_sector select 1) * MEMBER("ysector", nil)) + (MEMBER("ysector", nil) / 2);
+			_x = ((_sector select 0) * MEMBER("xsectorsize", nil)) + (MEMBER("xsectorsize", nil) / 2) + MEMBER("xmaporigin", nil);
+			_y = ((_sector select 1) * MEMBER("ysectorsize", nil)) + (MEMBER("ysectorsize", nil) / 2)+ MEMBER("ymaporigin", nil);;
 
 			[_x,_y];
 		};
 
-		// Check distance cost between tow sectors
-		PUBLIC FUNCTION("array", "GetEstimateCost") {
-			private ["_start", "_dx", "_dy", "_goal"];
-
-			_start = _this select 0;	
-			_goal = _this select 1;
-
-			_dx = abs((_start select 0) - (_goal select 0));
-			_dy = abs((_start select 1) - (_goal select 1));
-
-			_dy max _dx;
-		};
-
-		// Path finding  - retrieve next sector on the way
-		PUBLIC FUNCTION("array", "getNextSector") {
-			private ["_currentsector", "_dx", "_dy", "_goalsector", "_neighbors", "_nextsector", "_performance", "_position"];
-
-			_currentsector = _this select 0;	
-			_goalsector = _this select 1;
-
-			_neighbors = MEMBER("getSectorAround", _currentsector);
-
-			_performance = 1000000;
-			{				
-				_position = MEMBER("getPosFromSector", _x);
-				if!(surfaceIsWater _position) then {
-					_dx = abs((_x select 0) - (_goalsector select 0));
-					_dy = abs((_x select 1) - (_goalsector select 1));
-					if (_dx + _dy < _performance) then {
-						_performance = _dx + _dy;
-						_nextsector = _x;
-					};
-				};
-				sleep 0.0001;
-			}foreach _neighbors;
-
-			_nextsector;
-		};
-
-		// Path finding - find the best way
-		PUBLIC FUNCTION("array", "getPathToSector") {
-			private ["_array", "_sectors", "_currentsector", "_goalsector"];
-
-			_currentsector = _this select 0;	
-			_goalsector = _this select 1;
-			_sectors = [];
-
-			while { format["%1", _currentsector] != format["%1", _goalsector] } do {
-				_sectors = _sectors + [_currentsector];
-				_array = [_currentsector, _goalsector];
-				_currentsector = MEMBER("getNextSector", _array);
-				sleep 0.0001;
-			};
-			_sectors;
-		};
-
 		PUBLIC FUNCTION("","deconstructor") { 
-			DELETE_VARIABLE("xstart");
-			DELETE_VARIABLE("ystart");
-			DELETE_VARIABLE("xsize");
-			DELETE_VARIABLE("ysize");
-			DELETE_VARIABLE("xsector");
-			DELETE_VARIABLE("ysector");
+			DELETE_VARIABLE("xmaporigin");
+			DELETE_VARIABLE("ymaporigin");
+			DELETE_VARIABLE("xmapsize");
+			DELETE_VARIABLE("ymapsize");
+			DELETE_VARIABLE("xsectorsize");
+			DELETE_VARIABLE("ysectorsize");
 		};
 	ENDCLASS;
