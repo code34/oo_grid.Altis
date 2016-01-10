@@ -9,6 +9,7 @@ class Mission
 	addOnsAuto[]=
 	{
 		"A3_Characters_F_BLUFOR",
+		"a3_characters_f",
 		"a3_map_altis"
 	};
 	randomSeed=16186739;
@@ -42,7 +43,7 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={8941.6387,68.483162,11868.508};
+					position[]={8990.2383,38.715714,11888.773};
 					id=0;
 					side="WEST";
 					vehicle="B_Soldier_F";
@@ -51,6 +52,17 @@ class Mission
 					skill=0.60000002;
 				};
 			};
+		};
+	};
+	class Markers
+	{
+		items=1;
+		class Item0
+		{
+			position[]={8947.9189,66.371948,11849.531};
+			name="center";
+			text="center sector";
+			type="mil_destroy";
 		};
 	};
 };
