@@ -31,8 +31,11 @@
 		PUBLIC FUNCTION("array","constructor") {
 			private ["_xmaporigin", "_ymaporigin"];
 
-			_xmaporigin = (_this select 0) + ((_this select 2) / 2);
-			_ymaporigin = (_this select 1) + ((_this select 3) / 2);
+			//_xmaporigin = (_this select 0) + ((_this select 4) / 2);
+			//_ymaporigin = (_this select 1) + ((_this select 5) / 2);
+
+			_xmaporigin = _this select 0;
+			_ymaporigin = _this select 1;
 
 			MEMBER("xmaporigin", _xmaporigin);
 			MEMBER("ymaporigin", _ymaporigin);
@@ -96,6 +99,7 @@
 		};
 
 		/*
+		Validate
 		Translate a position into a sector
 		*/
 		PUBLIC FUNCTION("array", "getSectorFromPos") {
@@ -109,10 +113,27 @@
 		};
 
 		/*
-		Get the center of a sector from the position of the sector
+		Validate
+		Get the position from a sector
+		Return : array position of the sector
+		*/
+		PUBLIC FUNCTION("array", "getPosFromSector") {		
+			private ["_sector", "_x", "_y"];
+
+			_sector = _this;
+
+			_x = ((_sector select 0) * MEMBER("xsectorsize", nil)) + (MEMBER("xsectorsize", nil) / 2) + MEMBER("xmaporigin", nil);
+			_y = ((_sector select 1) * MEMBER("ysectorsize", nil)) + (MEMBER("ysectorsize", nil) / 2)+ MEMBER("ymaporigin", nil);;
+
+			[_x,_y];
+		};		
+
+		/*
+		Validate
+		Get the center position of a sector from a position
 		Return the center of a sector from a position
 		*/
-		PUBLIC FUNCTION("array", "getCenterPos") {
+		PUBLIC FUNCTION("array", "getSectorCenterPos") {
 			private ["_position", "_sector"];			
 
 			_position = _this;
@@ -218,21 +239,6 @@
 				}foreach _buildings;
 			};
 			_positions;
-		};
-
-		/*
-		Get the position from a sector
-		Return : array position of the sector
-		*/
-		PUBLIC FUNCTION("array", "getPosFromSector") {		
-			private ["_sector", "_x", "_y"];
-
-			_sector = _this;
-
-			_x = ((_sector select 0) * MEMBER("xsectorsize", nil)) + (MEMBER("xsectorsize", nil) / 2) + MEMBER("xmaporigin", nil);
-			_y = ((_sector select 1) * MEMBER("ysectorsize", nil)) + (MEMBER("ysectorsize", nil) / 2)+ MEMBER("ymaporigin", nil);;
-
-			[_x,_y];
 		};
 
 		PUBLIC FUNCTION("","deconstructor") { 
