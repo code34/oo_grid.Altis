@@ -146,7 +146,7 @@
 
 			_params = [_this, 1];
 			
-			_grid = MEMBER("getSectorAllAround", _params);
+			_grid = MEMBER("getAllSectorsAroundSector", _params);
 			_grid;
 		};
 
@@ -159,7 +159,7 @@
 
 			_sector = MEMBER("getSectorFromPos", _this);
 
-			MEMBER("getSectorAround", _sector);
+			MEMBER("getSectorsAroundSector", _sector);
 		};
 
 		
@@ -190,7 +190,7 @@
 
 			_sector = MEMBER("getSectorFromPos", _this);
 
-			MEMBER("getSectorCrossAround", _sector);
+			MEMBER("getSectorsCrossAroundSector", _sector);
 		};
 
 		/*
@@ -225,11 +225,10 @@
 		PUBLIC FUNCTION("array", "getAllSectorsAroundPos") {
 			private ["_sector", "_scale", "_array"];
 
-
 			_sector = MEMBER("getSectorFromPos", _this select 0);
 			_scale = _this select 1;
 			_array = [_sector, _scale];
-			MEMBER("getSectorAllAround", _array);
+			MEMBER("getAllSectorsAroundSector", _array);
 		};
 
 		/*
