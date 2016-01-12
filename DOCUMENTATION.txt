@@ -1,6 +1,5 @@
-	/*
 	Author: code34 nicolas_boiteux@yahoo.fr
-	Copyright (C) 2013 Nicolas BOITEUX
+	Copyright (C) 2013-2016 Nicolas BOITEUX
 
 	CLASS OO_GRID STRATEGIC GRID
 	
@@ -16,95 +15,243 @@
 	
 	You should have received a copy of the GNU General Public License
 	along with this program.  If not, see <http://www.gnu.org/licenses/>. 
-	*/
 
+	--------------------------------------------------------------------------------------------------------------
 
-/*
-	Function: _grid = ["new", [xmapsize,ymapsize,xsectorsize,ysectorsize]] call OO_GRID;
+	Function: _grid = ["new", [xgrid,ygrid,xgridsize,ygridsize,xsectorsize,ysectorsize]] call OO_GRID;
 	Create a new grid object
-	
-	Parameters:
-		xmapsize - X map size
-		ymapsize - Y map size
-		xsectorsize - X sector size
-		ysectorsize - X sector size
-	
-*/
 
-/*
-	Function: = ["delete", _grid] call OO_GRID;
-	Delete the grid object
-	
 	Parameters:
-		grid - OO GRID object.
+		xgrid - x grid pos
+		ygrid - y grid pos
+		xgridsize - grid width
+		ygridsize - grid height
+		xsectorsize - sector width
+		ysectorsize - sector height
 	
-*/
+	--------------------------------------------------------------------------------------------------------------
 
-/*
-	Function: ["parseAllSectors", string] spawn _grid;
+	Function: ["setXgrid", _int] call _grid;
+	Set xgrid value
+
+	Parameters : _int : int x grid pos
+	--------------------------------------------------------------------------------------------------------------
+
+	Function: ["setYgrid", _int] call _grid;
+	Set xgrid value
+
+	Parameters : _int : int y grid pos
+	--------------------------------------------------------------------------------------------------------------
+
+	Function: ["setXgridsize", _int] call _grid;
+	Set xgridsize value
+
+	Parameters : _int : int grid width
+	--------------------------------------------------------------------------------------------------------------
+
+	Function: ["setYgridsize", _int] call _grid;
+	Set ygridsize value
+
+	Parameters : _int : int grid height
+	--------------------------------------------------------------------------------------------------------------
+
+	Function: ["setXsectorsize", _int] call _grid;
+	Set sector width
+
+	Parameters : _int : int sector width
+
+	--------------------------------------------------------------------------------------------------------------
+
+	Function: ["setYsectorsize", _int] call _grid;
+	Set sector height
+
+	Parameters : _int : int sector height
+
+	--------------------------------------------------------------------------------------------------------------
+
+	Function: _int = "getXgrid" call _grid;
+	Get xgrid value
+
+	Parameters : nothing
+
+	Return: int 
+
+	--------------------------------------------------------------------------------------------------------------
+
+	Function: _int = "getYgrid" call _grid;
+	Get ygrid value
+
+	Parameters : nothing
+
+	Return: int
+
+	--------------------------------------------------------------------------------------------------------------
+
+	Function: _int = "getXgridsize" call _grid;
+	Get xgridsize value
+
+	Parameters : nothing
+
+	Return : int
+
+	--------------------------------------------------------------------------------------------------------------
+
+	Function: _int = "getYgridsize call _grid;
+	Get ygridsize value
+
+	Parameters : nothing
+
+	Return : int
+	--------------------------------------------------------------------------------------------------------------
+
+	Function: _int = "getXsectorsize" call _grid;
+	Get sector width
+
+	Parameters = nothing
+
+	Return : int
+
+	--------------------------------------------------------------------------------------------------------------
+
+	Function: _int = "getYsectorsize" call _grid;
+	Get sector height
+
+	Parameters : nothing
+
+	Return : int
+
+	--------------------------------------------------------------------------------------------------------------
+
+	Function: _array = ["parseAllSectors", string] call _grid;
 	Parse all sectors of grid with a function call that returns true or false
 	
-	Parameters:
-		string - function name
-	
-*/
+	Parameters: string - function name (functin must return true or false)
 
+	Return : array of sectors
 
-/*
-	Function: ["getSectorFromPos", array] spawn _grid;
-	Get sector from a position
-	
-	Parameters:
-		array - position
-	
-*/
+	--------------------------------------------------------------------------------------------------------------
 
-/*
-	Function: ["getSectorAround", array] spawn _grid;
-	Get an array of sectors all around the sector (3x3 sectors)
+	Function: _array = ["parseSectors", string] call _grid;
+	Parse sectors of grid with a function call that returns true or false
 	
-	Parameters:
-		array - sector position
+	Parameters: 
+		array - array of sectors
+		string - function name (functin must return true or false)
+
+	Return : array of sectors
+
+	--------------------------------------------------------------------------------------------------------------
+
+	Function: _sector = ["getSectorFromPos", _position] call _grid;
+	Translate a position to a sector
 	
-*/
+	Parameters: 
+		array - position array
 
-/*
-	Function: ["getCenterPos", array] spawn _grid;
-	Get center position of a sector with a position
+	Return : array - sector
+
+	--------------------------------------------------------------------------------------------------------------
+
+	Function: _position = ["getPosFromSector", _position] call _grid;
+	Translate a sector to position
 	
-	Parameters:
-		array - position
+	Parameters: array - sector array
 
-*/
+	Return : array position
 
-/*
-	Function: ["getSectorAllAround", array] spawn _grid;
-	Get an array of sectors all around the sector at x scales (scale x scale sectors)
+	--------------------------------------------------------------------------------------------------------------
+
+	Function: _sector = ["getSectorCenterPos", _position] call _grid;
+	Retrieve the center position of a sector, from a position
 	
-	Parameters:
-		array 
-			- sector position
-			- scale
-
+	Parameters: array - position
 	
-*/
+	Return : array position of the sector center
 
-/*
-	Function: ["getSectorCrossAround", array] spawn _grid;
-	Get an array of cross sectors all around the sector 2 horizontals + 2 verticals + 1 center
+	--------------------------------------------------------------------------------------------------------------
+
+	Function: _array = ["getSectorsAroundSector", _sector] call _grid;
+	Get all sectors around one sector at 1 scale
 	
-	Parameters:
-		array - sector position
-
-*/
-
-/*
-	Function: ["getPosFromSector", array] spawn _grid;
-	Get a position from a sector
+	Parameters: array - array sector
 	
-	Parameters:
-		array - sector position
-	
-*/
+	Return : array containing all sectors
+	--------------------------------------------------------------------------------------------------------------
 
+	Function: _array = ["getSectorsAroundPos", _position] call _grid;
+	Get all sectors around a position at 1 scale
+	
+	Parameters: array - array position
+	
+	Return : array containing all sectors
+
+	--------------------------------------------------------------------------------------------------------------
+
+	Function: _array = ["getSectorsCrossAroundSector", _sector] call _grid;
+	Get cross sectors around a sector
+	
+	Parameters: array - array sector
+	
+	Return : array containing all sectors
+	
+	--------------------------------------------------------------------------------------------------------------
+
+	Function: _array = ["getSectorsCrossAroundPos", _position] call _grid;
+	Get cross sectors around a position
+	
+	Parameters: array - array position
+	
+	Return : array containing all sectors
+
+	--------------------------------------------------------------------------------------------------------------
+
+	Function: _array = ["getAllSectorsAroundSector", _array] call _grid;
+	Get all sectors around a sector at scale sector distance
+
+	Parameters: array [_sector, _scale]
+		_sector : array sector
+		_scale : int (scale to extend)
+
+	Return : array containing all sectors
+
+	--------------------------------------------------------------------------------------------------------------
+
+	Function: _array = ["getAllSectorsAroundPos", _array] call _grid;
+	Get all sectors around a sector at scale sector distance
+	
+	Parameters: array [_position, _scale]
+		_position : array position
+		_scale : int (scale to extend)	
+	Return : array containing all sectors
+
+	--------------------------------------------------------------------------------------------------------------
+
+	Function: _bool = ["hasBuildingsAtSector", _sector] call _grid;
+	Check if sector has building
+	
+	Parameters: array sector
+	Return : bool
+
+	--------------------------------------------------------------------------------------------------------------
+
+	Function: _bool = ["hasBuildingsAtPos", _position] call _grid;
+	Check if position has buildings
+	
+	Parameters: array position
+	Return : bool
+
+	--------------------------------------------------------------------------------------------------------------
+
+	Function: _array = ["getPositionsBuilding", _position] call _grid;
+	Return all the positions in the building  at position
+	
+	Parameters: array position
+	Return : array - array of buildings positions
+
+	--------------------------------------------------------------------------------------------------------------
+
+	Function: ["delete", _grid] call OO_GRID;
+	Delete the grid object
+	
+	Parameters:  _grid - OO GRID object
 
