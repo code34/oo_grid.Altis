@@ -29,13 +29,8 @@
 		PRIVATE VARIABLE("scalar","ysectorsize");
 
 		PUBLIC FUNCTION("array","constructor") {
-			private ["_xmaporigin", "_ymaporigin"];
-
-			_xmaporigin = _this select 0;
-			_ymaporigin = _this select 1;
-
-			MEMBER("xmaporigin", _xmaporigin);
-			MEMBER("ymaporigin", _ymaporigin);
+			MEMBER("xmaporigin", _this select 0);
+			MEMBER("ymaporigin", _this select 1);
 			MEMBER("xmapsize", _this select 2);
 			MEMBER("ymapsize", _this select 3);
 			MEMBER("xsectorsize", _this select 4);
