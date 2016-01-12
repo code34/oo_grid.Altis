@@ -83,6 +83,7 @@
 		/* 
 		Call a loopback parsing function and return sectors that are concerned
 		Example of string parameter: "hasBuildingsAtSector" will return sector with buildings
+		Parameters: _function : string function name
 		*/ 
 		PUBLIC FUNCTION("string", "parseAllSectors") {
 			private["_array", "_function", "_position", "_result", "_sector", "_x", "_y"];
@@ -110,7 +111,6 @@
 			_function: string name of the function to loop back
 		Return : array of sectors
 		*/
-
 		PUBLIC FUNCTION("array", "parseSectors") {
 			private ["_array", "_result"];
 
@@ -173,6 +173,7 @@
 
 		/*
 		Get all sectors around one sector
+		Parameters: array - array sector
 		Return : array containing all sectors
 		*/		
 		PUBLIC FUNCTION("array", "getSectorsAroundSector") {
@@ -276,6 +277,7 @@
 
 		/*
 		Check if sector has building
+		Parameters : array - array sector
 		Return : boolean
 		*/		
 		PUBLIC FUNCTION("array", "hasBuildingsAtSector") {
@@ -291,6 +293,7 @@
 
 		/*
 		Check from a position if there are buildings in sector
+		Parameters: array - array position
 		Return : boolean
 		*/	
 		PUBLIC FUNCTION("array", "hasBuildingsAtPos") {
@@ -306,6 +309,7 @@
 
 		/*
 		Retrieve indexed building in the sector position
+		Parameters: array - array position
 		Return : array containing all positions in building
 		*/
 		PUBLIC FUNCTION("array", "getPositionsBuilding") {
