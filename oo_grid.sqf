@@ -21,36 +21,48 @@
 	#include "oop.h"
 
 	CLASS("OO_GRID")
-		PRIVATE VARIABLE("scalar","xmaporigin");
-		PRIVATE VARIABLE("scalar","ymaporigin");
-		PRIVATE VARIABLE("scalar","xmapsize");
-		PRIVATE VARIABLE("scalar","ymapsize");
+		PRIVATE VARIABLE("scalar","xgrid");
+		PRIVATE VARIABLE("scalar","ygrid");
+		PRIVATE VARIABLE("scalar","xgridsize");
+		PRIVATE VARIABLE("scalar","ygridsize");
 		PRIVATE VARIABLE("scalar","xsectorsize");
 		PRIVATE VARIABLE("scalar","ysectorsize");
 
+		/*
+		Create a new grid object
+
+		Parameters:
+			xgrid - x grid pos
+			ygrid - y grid pos
+			xgridsize - grid width
+			ygridsize - grid height
+			xsectorsize - sector width
+			ysectorsize - sector height
+		*/
+
 		PUBLIC FUNCTION("array","constructor") {
-			MEMBER("xmaporigin", _this select 0);
-			MEMBER("ymaporigin", _this select 1);
-			MEMBER("xmapsize", _this select 2);
-			MEMBER("ymapsize", _this select 3);
+			MEMBER("xgrid", _this select 0);
+			MEMBER("ygrid", _this select 1);
+			MEMBER("xgridsize", _this select 2);
+			MEMBER("ygridsize", _this select 3);
 			MEMBER("xsectorsize", _this select 4);
 			MEMBER("ysectorsize", _this select 5);
 		};
 
-		PUBLIC FUNCTION("scalar","setXmaporigin") {
-			MEMBER("xmaporigin", _this);
+		PUBLIC FUNCTION("scalar","setXgrid") {
+			MEMBER("xgrid", _this);
 		};
 
-		PUBLIC FUNCTION("scalar","setYmaporigin") {
-			MEMBER("ymaporigin", _this);
+		PUBLIC FUNCTION("scalar","setYgrid") {
+			MEMBER("ygrid", _this);
 		};
 
-		PUBLIC FUNCTION("scalar","setXmapsize") {
-			MEMBER("xmapsize", _this);
+		PUBLIC FUNCTION("scalar","setXgridsize") {
+			MEMBER("xgridsize", _this);
 		};
 
-		PUBLIC FUNCTION("scalar","setYmapsize") {
-			MEMBER("ymapsize", _this);
+		PUBLIC FUNCTION("scalar","setYgridsize") {
+			MEMBER("ygridsize", _this);
 		};
 
 		PUBLIC FUNCTION("scalar","setXsectorsize") {
@@ -61,16 +73,16 @@
 			MEMBER("ysectorsize", _this);
 		};
 
-		PUBLIC FUNCTION("","getXmaporigin") FUNC_GETVAR("xmaporigin");
-		PUBLIC FUNCTION("","getYmaporigin") FUNC_GETVAR("ymaporigin");
-		PUBLIC FUNCTION("","getXmapsize") FUNC_GETVAR("xmapsize");
-		PUBLIC FUNCTION("","getYmapsize") FUNC_GETVAR("ymapsize");
+		PUBLIC FUNCTION("","getXgrid") FUNC_GETVAR("xgrid");
+		PUBLIC FUNCTION("","getYgrid") FUNC_GETVAR("ygrid");
+		PUBLIC FUNCTION("","getXgridsize") FUNC_GETVAR("xgridsize");
+		PUBLIC FUNCTION("","getYgridsize") FUNC_GETVAR("ygridsize");
 		PUBLIC FUNCTION("","getXsectorsize") FUNC_GETVAR("xsectorsize");
 		PUBLIC FUNCTION("","getYsectorsize") FUNC_GETVAR("ysectorsize");
 
 		/* 
 		Call a loopback parsing function and return sectors that are concerned
-		Example of string parameter: "hasBuilding" will return sector with buildings
+		Example of string parameter: "hasBuildingsAtSector" will return sector with buildings
 		*/ 
 		PUBLIC FUNCTION("string", "parseAllSectors") {
 			private["_array", "_function", "_position", "_result", "_sector", "_x", "_y"];
@@ -78,8 +90,8 @@
 			_function = _this;
 			_array = [];
 
-			for "_y" from MEMBER("ymaporigin", nil) to MEMBER("ymapsize", nil) step MEMBER("ysectorsize", nil) do {
-				for "_x" from MEMBER("xmaporigin", nil) to MEMBER("xmapsize", nil) step MEMBER("xsectorsize", nil) do {
+			for "_y" from MEMBER("ygrid", nil) to MEMBER("ygridsize", nil) step MEMBER("ysectorsize", nil) do {
+				for "_x" from MEMBER("xgrid", nil) to MEMBER("xgridsize", nil) step MEMBER("xsectorsize", nil) do {
 					_position = [_x, _y];
 					_sector = MEMBER("getSectorFromPos", _position);
 					if(MEMBER(_function, _sector)) then {
@@ -91,36 +103,63 @@
 		};
 
 		/*
-		Translate a position into a sector
+		Call a loopback parsing function and return sectors that are concerned
+		Example of string parameter: "hasBuildingsAtSector" will return sector with buildings
+		Parameters: [_arrayofsectors, _function]
+			_arrayofsectors : array containg sectors
+			_function: string name of the function to loop back
+		Return : array of sectors
+		*/
+
+		PUBLIC FUNCTION("array", "parseSectors") {
+			private ["_array", "_result"];
+
+			_array = _this select 0;
+			_function = _this select 1;
+
+			{
+				if(MEMBER(_function, _x)) then {
+					_result = _result + [_x];
+				};
+			} foreach _array;
+			_result;
+		};
+
+		/*
+		Translate a position to a sector
+		Parameters: array - position array
+		Return : array - sector
 		*/
 		PUBLIC FUNCTION("array", "getSectorFromPos") {
 			private ["_position", "_xpos", "_ypos"];
 
 			_position = _this;
 
-			_xpos = floor(((_position select 0) - MEMBER("xmaporigin",nil)) / MEMBER("xsectorsize", nil));
-			_ypos = floor(((_position select 1) - MEMBER("ymaporigin",nil)) / MEMBER("ysectorsize", nil));
+			_xpos = floor(((_position select 0) - MEMBER("xgrid",nil)) / MEMBER("xsectorsize", nil));
+			_ypos = floor(((_position select 1) - MEMBER("ygrid",nil)) / MEMBER("ysectorsize", nil));
 			[_xpos, _ypos];
 		};
 
 		/*
-		Get the position from a sector
-		Return : array position of the sector
+		Translate a sector to a position
+		Parameters: array - sector array
+		Return : array position
 		*/
 		PUBLIC FUNCTION("array", "getPosFromSector") {		
 			private ["_sector", "_x", "_y"];
 
 			_sector = _this;
 
-			_x = ((_sector select 0) * MEMBER("xsectorsize", nil)) + (MEMBER("xsectorsize", nil) / 2) + MEMBER("xmaporigin", nil);
-			_y = ((_sector select 1) * MEMBER("ysectorsize", nil)) + (MEMBER("ysectorsize", nil) / 2)+ MEMBER("ymaporigin", nil);;
+			_x = ((_sector select 0) * MEMBER("xsectorsize", nil)) + (MEMBER("xsectorsize", nil) / 2) + MEMBER("xgrid", nil);
+			_y = ((_sector select 1) * MEMBER("ysectorsize", nil)) + (MEMBER("ysectorsize", nil) / 2)+ MEMBER("ygrid", nil);;
 
 			[_x,_y];
 		};		
 
 		/*
-		Get the center position of a sector from a position
-		Return the center of a sector from a position
+		Retrieve the center position of a sector, from a position
+		Parameters: array - position
+		Return : array position of the sector center
 		*/
 		PUBLIC FUNCTION("array", "getSectorCenterPos") {
 			private ["_position", "_sector"];			
@@ -147,6 +186,7 @@
 
 		/*
 		Get all sectors around one position
+		Parameters: array - array position
 		Return : array containing all sectors
 		*/		
 		PUBLIC FUNCTION("array", "getSectorsAroundPos") {
@@ -160,6 +200,7 @@
 		
 		/*
 		Get cross sectors around a sector
+		Parameters: array - array sector
 		Return : array containing all sectors
 		*/
 		PUBLIC FUNCTION("array", "getSectorsCrossAroundSector") {
@@ -178,6 +219,7 @@
 
 		/*
 		Get cross sectors around a position
+		Parameters: array - array position
 		Return : array containing all sectors
 		*/
 		PUBLIC FUNCTION("array", "getSectorsCrossAroundPos") {
@@ -190,6 +232,9 @@
 
 		/*
 		Get all sectors around a sector at scale sector distance
+		Parameters: array [_sector, _scale]
+			_sector : array sector
+			_scale : int (scale to extend)
 		Return : array containing all sectors
 		*/
 		PUBLIC FUNCTION("array", "getAllSectorsAroundSector") {
@@ -215,6 +260,9 @@
 
 		/*
 		Get all sectors around a sector at scale sector distance
+		Parameters: array [_position, _scale]
+			_position : array position
+			_scale : int (scale to extend)	
 		Return : array containing all sectors
 		*/
 		PUBLIC FUNCTION("array", "getAllSectorsAroundPos") {
@@ -283,10 +331,10 @@
 		};
 
 		PUBLIC FUNCTION("","deconstructor") { 
-			DELETE_VARIABLE("xmaporigin");
-			DELETE_VARIABLE("ymaporigin");
-			DELETE_VARIABLE("xmapsize");
-			DELETE_VARIABLE("ymapsize");
+			DELETE_VARIABLE("xgrid");
+			DELETE_VARIABLE("ygrid");
+			DELETE_VARIABLE("xgridsize");
+			DELETE_VARIABLE("ygridsize");
 			DELETE_VARIABLE("xsectorsize");
 			DELETE_VARIABLE("ysectorsize");
 		};
