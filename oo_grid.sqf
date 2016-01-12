@@ -31,9 +31,6 @@
 		PUBLIC FUNCTION("array","constructor") {
 			private ["_xmaporigin", "_ymaporigin"];
 
-			//_xmaporigin = (_this select 0) + ((_this select 4) / 2);
-			//_ymaporigin = (_this select 1) + ((_this select 5) / 2);
-
 			_xmaporigin = _this select 0;
 			_ymaporigin = _this select 1;
 
@@ -77,9 +74,8 @@
 		PUBLIC FUNCTION("","getYsectorsize") FUNC_GETVAR("ysectorsize");
 
 		/* 
-		Validate
 		Call a loopback parsing function and return sectors that are concerned
-		Example of string parameter: "isBuilding" will return sector with buildings
+		Example of string parameter: "hasBuilding" will return sector with buildings
 		*/ 
 		PUBLIC FUNCTION("string", "parseAllSectors") {
 			private["_array", "_function", "_position", "_result", "_sector", "_x", "_y"];
@@ -100,7 +96,6 @@
 		};
 
 		/*
-		Validate
 		Translate a position into a sector
 		*/
 		PUBLIC FUNCTION("array", "getSectorFromPos") {
@@ -114,7 +109,6 @@
 		};
 
 		/*
-		Validate
 		Get the position from a sector
 		Return : array position of the sector
 		*/
@@ -130,7 +124,6 @@
 		};		
 
 		/*
-		Validate
 		Get the center position of a sector from a position
 		Return the center of a sector from a position
 		*/
@@ -145,27 +138,36 @@
 		};
 
 		/*
-		Validate
 		Get all sectors around one sector
 		Return : array containing all sectors
 		*/		
-		PUBLIC FUNCTION("array", "getSectorAround") {
-			private ["_grid", "_params", "_sector"];
+		PUBLIC FUNCTION("array", "getSectorsAroundSector") {
+			private ["_grid", "_params"];
 
-			_sector = _this;	
-			_params = [_sector, 1];
+			_params = [_this, 1];
 			
 			_grid = MEMBER("getSectorAllAround", _params);
 			_grid;
 		};
 
+		/*
+		Get all sectors around one position
+		Return : array containing all sectors
+		*/		
+		PUBLIC FUNCTION("array", "getSectorsAroundPos") {
+			private ["_sector"];
+
+			_sector = MEMBER("getSectorFromPos", _this);
+
+			MEMBER("getSectorAround", _sector);
+		};
+
 		
 		/*
-		Validate
 		Get cross sectors around a sector
 		Return : array containing all sectors
 		*/
-		PUBLIC FUNCTION("array", "getSectorCrossAround") {
+		PUBLIC FUNCTION("array", "getSectorsCrossAroundSector") {
 			private ["_grid", "_sector"];
 
 			_sector = _this;
@@ -180,11 +182,22 @@
 		};
 
 		/*
-		Validate
+		Get cross sectors around a position
+		Return : array containing all sectors
+		*/
+		PUBLIC FUNCTION("array", "getSectorsCrossAroundPos") {
+			private ["_sector"];
+
+			_sector = MEMBER("getSectorFromPos", _this);
+
+			MEMBER("getSectorCrossAround", _sector);
+		};
+
+		/*
 		Get all sectors around a sector at scale sector distance
 		Return : array containing all sectors
 		*/
-		PUBLIC FUNCTION("array", "getSectorAllAround") {
+		PUBLIC FUNCTION("array", "getAllSectorsAroundSector") {
 			private ["_grid", "_scale", "_sector", "_botx", "_boty", "_topx", "_topy", "_x", "_y"];
 
 			_sector = _this select 0;
@@ -206,29 +219,57 @@
 		};
 
 		/*
-		Validate
-		Check if there is buildings in the sector
+		Get all sectors around a sector at scale sector distance
+		Return : array containing all sectors
+		*/
+		PUBLIC FUNCTION("array", "getAllSectorsAroundPos") {
+			private ["_sector", "_scale", "_array"];
+
+
+			_sector = MEMBER("getSectorFromPos", _this select 0);
+			_scale = _this select 1;
+			_array = [_sector, _scale];
+			MEMBER("getSectorAllAround", _array);
+		};
+
+		/*
+		Check if sector has building
 		Return : boolean
 		*/		
-		PUBLIC FUNCTION("array", "isBuilding") {
-			private ["_positions", "_result"];
+		PUBLIC FUNCTION("array", "hasBuildingsAtSector") {
+			private ["_positions", "_result", "_position"];
 
 			_sector = _this;
-			_positions = MEMBER("getPositionsBuilding", _sector);
+			_position = MEMBER("getPosFromSector", _sector);
+			_positions = MEMBER("getPositionsBuilding", _position);
+
 			if (count _positions > 10) then { _result = true;} else { _result = false;};
 			_result;
 		};
 
 		/*
-		Validate
+		Check from a position if there are buildings in sector
+		Return : boolean
+		*/	
+		PUBLIC FUNCTION("array", "hasBuildingsAtPos") {
+			private ["_positions", "_result", "_position"];
+
+			_position = _this;
+			_positions = MEMBER("getPositionsBuilding", _position);
+
+			if (count _positions > 10) then { _result = true;} else { _result = false;};
+			_result;
+		};
+
+
+		/*
 		Retrieve indexed building in the sector position
 		Return : array containing all positions in building
 		*/
 		PUBLIC FUNCTION("array", "getPositionsBuilding") {
 			private ["_index", "_buildings", "_position", "_positions", "_result"];
 
-			_sector = _this;
-			_position = MEMBER("getPosFromSector", _sector);
+			_position = _this;
 			_positions = [];
 			
 			if!(surfaceIsWater _position) then {
