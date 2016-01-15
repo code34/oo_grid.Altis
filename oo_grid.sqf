@@ -177,24 +177,24 @@
 		Return : array containing all sectors
 		*/		
 		PUBLIC FUNCTION("array", "getSectorsAroundSector") {
-			private ["_grid", "_params", "_sector"];
+			private ["_grid"];
 
 			//_params = [_this, 1];
 			
 			//_grid = MEMBER("getAllSectorsAroundSector", _params);
 			//_grid;
 
-			_sector = _this;
+			//_sector = _this;
 
 			_grid = [
-				[(_sector select 0) -1, (_sector select 1) - 1],
-				[(_sector select 0), (_sector select 1) - 1],
-				[(_sector select 0) + 1, (_sector select 1) -1],
-				[(_sector select 0)-1, (_sector select 1)],
-				[(_sector select 0)+1, (_sector select 1)],
-				[(_sector select 0)-1, (_sector select 1) + 1],
-				[(_sector select 0), (_sector select 1) + 1],
-				[(_sector select 0)+1, (_sector select 1) + 1],
+				[(_this select 0) -1, (_this select 1) - 1],
+				[(_this select 0), (_this select 1) - 1],
+				[(_this select 0) + 1, (_this select 1) -1],
+				[(_this select 0)-1, (_this select 1)],
+				[(_this select 0)+1, (_this select 1)],
+				[(_this select 0)-1, (_this select 1) + 1],
+				[(_this select 0), (_this select 1) + 1],
+				[(_this select 0)+1, (_this select 1) + 1],
 				];
 			_grid;			
 		};
@@ -219,15 +219,13 @@
 		Return : array containing all sectors
 		*/
 		PUBLIC FUNCTION("array", "getSectorsCrossAroundSector") {
-			private ["_grid", "_sector"];
-
-			_sector = _this;
+			private ["_grid"];
 
 			_grid = [
-				[(_sector select 0), (_sector select 1) - 1],
-				[(_sector select 0)-1, (_sector select 1)],
-				[(_sector select 0)+1, (_sector select 1)],
-				[(_sector select 0), (_sector select 1) + 1]
+				[(_this select 0), (_this select 1) - 1],
+				[(_this select 0)-1, (_this select 1)],
+				[(_this select 0)+1, (_this select 1)],
+				[(_this select 0), (_this select 1) + 1]
 				];
 			_grid;
 		};
