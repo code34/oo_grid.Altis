@@ -177,12 +177,26 @@
 		Return : array containing all sectors
 		*/		
 		PUBLIC FUNCTION("array", "getSectorsAroundSector") {
-			private ["_grid", "_params"];
+			private ["_grid", "_params", "_sector"];
 
-			_params = [_this, 1];
+			//_params = [_this, 1];
 			
-			_grid = MEMBER("getAllSectorsAroundSector", _params);
-			_grid;
+			//_grid = MEMBER("getAllSectorsAroundSector", _params);
+			//_grid;
+
+			_sector = _this;
+
+			_grid = [
+				[(_sector select 0) -1, (_sector select 1) - 1],
+				[(_sector select 0), (_sector select 1) - 1],
+				[(_sector select 0) + 1, (_sector select 1) -1],
+				[(_sector select 0)-1, (_sector select 1)],
+				[(_sector select 0)+1, (_sector select 1)],
+				[(_sector select 0)-1, (_sector select 1) + 1],
+				[(_sector select 0), (_sector select 1) + 1],
+				[(_sector select 0)+1, (_sector select 1) + 1],
+				];
+			_grid;			
 		};
 
 		/*
