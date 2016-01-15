@@ -179,13 +179,6 @@
 		PUBLIC FUNCTION("array", "getSectorsAroundSector") {
 			private ["_grid"];
 
-			//_params = [_this, 1];
-			
-			//_grid = MEMBER("getAllSectorsAroundSector", _params);
-			//_grid;
-
-			//_sector = _this;
-
 			_grid = [
 				[(_this select 0) -1, (_this select 1) - 1],
 				[(_this select 0), (_this select 1) - 1],
@@ -194,7 +187,7 @@
 				[(_this select 0)+1, (_this select 1)],
 				[(_this select 0)-1, (_this select 1) + 1],
 				[(_this select 0), (_this select 1) + 1],
-				[(_this select 0)+1, (_this select 1) + 1],
+				[(_this select 0)+1, (_this select 1) + 1]
 				];
 			_grid;			
 		};
@@ -268,6 +261,7 @@
 					_grid = _grid + [[_x, _y]];
 				};
 			};
+			_grid = _grid - [_sector];
 			_grid;
 		};
 
