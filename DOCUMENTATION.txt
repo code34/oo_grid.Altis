@@ -96,7 +96,7 @@
 
 	--------------------------------------------------------------------------------------------------------------
 
-	Function: _int = "getYgridsize call _grid;
+	Function: _int = "getYgridsize" call _grid;
 	Get ygridsize value
 
 	Parameters : nothing
