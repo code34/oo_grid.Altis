@@ -31,94 +31,94 @@
 	
 	--------------------------------------------------------------------------------------------------------------
 
-	Function: ["setXgrid", _int] call _grid;
+	Function: ["setXgrid", _scalar] call _grid;
 	Set xgrid value
 
-	Parameters : _int : int x grid pos
+	Parameters : _scalar : scalar x grid pos
 	--------------------------------------------------------------------------------------------------------------
 
-	Function: ["setYgrid", _int] call _grid;
+	Function: ["setYgrid", _scalar] call _grid;
 	Set xgrid value
 
-	Parameters : _int : int y grid pos
+	Parameters : _scalar : scalar y grid pos
 	--------------------------------------------------------------------------------------------------------------
 
-	Function: ["setXgridsize", _int] call _grid;
+	Function: ["setXgridsize", _scalar] call _grid;
 	Set xgridsize value
 
-	Parameters : _int : int grid width
+	Parameters : _scalar : scalar grid width
 	--------------------------------------------------------------------------------------------------------------
 
-	Function: ["setYgridsize", _int] call _grid;
+	Function: ["setYgridsize", _scalar] call _grid;
 	Set ygridsize value
 
-	Parameters : _int : int grid height
+	Parameters : _scalar : scalar grid height
 	--------------------------------------------------------------------------------------------------------------
 
-	Function: ["setXsectorsize", _int] call _grid;
+	Function: ["setXsectorsize", _scalar] call _grid;
 	Set sector width
 
-	Parameters : _int : int sector width
+	Parameters : _scalar : scalar sector width
 
 	--------------------------------------------------------------------------------------------------------------
 
-	Function: ["setYsectorsize", _int] call _grid;
+	Function: ["setYsectorsize", _scalar] call _grid;
 	Set sector height
 
-	Parameters : _int : int sector height
+	Parameters : _scalar : scalar sector height
 
 	--------------------------------------------------------------------------------------------------------------
 
-	Function: _int = "getXgrid" call _grid;
+	Function: _scalar = "getXgrid" call _grid;
 	Get xgrid value
 
 	Parameters : nothing
 
-	Return: int 
+	Return: scalar 
 
 	--------------------------------------------------------------------------------------------------------------
 
-	Function: _int = "getYgrid" call _grid;
+	Function: _scalar = "getYgrid" call _grid;
 	Get ygrid value
 
 	Parameters : nothing
 
-	Return: int
+	Return: scalar
 
 	--------------------------------------------------------------------------------------------------------------
 
-	Function: _int = "getXgridsize" call _grid;
+	Function: _scalar = "getXgridsize" call _grid;
 	Get xgridsize value
 
 	Parameters : nothing
 
-	Return : int
+	Return : scalar
 
 	--------------------------------------------------------------------------------------------------------------
 
-	Function: _int = "getYgridsize" call _grid;
+	Function: _scalar = "getYgridsize" call _grid;
 	Get ygridsize value
 
 	Parameters : nothing
 
-	Return : int
+	Return : scalar
 	--------------------------------------------------------------------------------------------------------------
 
-	Function: _int = "getXsectorsize" call _grid;
+	Function: _scalar = "getXsectorsize" call _grid;
 	Get sector width
 
 	Parameters = nothing
 
-	Return : int
+	Return : scalar
 
 	--------------------------------------------------------------------------------------------------------------
 
-	Function: _int = "getYsectorsize" call _grid;
+	Function: _scalar = "getYsectorsize" call _grid;
 	Get sector height
 
 	Parameters : nothing
 
-	Return : int
+	Return : scalar
 
 	--------------------------------------------------------------------------------------------------------------
 
@@ -210,7 +210,7 @@
 
 	Parameters: array [_sector, _scale]
 		_sector : array sector
-		_scale : int (scale to extend)
+		_scale : scalar (scale to extend)
 
 	Return : array containing all sectors
 
@@ -221,7 +221,7 @@
 	
 	Parameters: array [_position, _scale]
 		_position : array position
-		_scale : int (scale to extend)	
+		_scale : scalar (scale to extend)	
 	Return : array containing all sectors
 
 	--------------------------------------------------------------------------------------------------------------
