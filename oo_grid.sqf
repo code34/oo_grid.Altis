@@ -82,7 +82,7 @@
 			_marker setMarkerShape "RECTANGLE";
 			_marker setmarkerbrush "Solid";
 			_marker setmarkercolor "ColorRed";
-			_marker setmarkersize [_xsize,_ysize];
+			_marker setmarkersize [_xsize/2,_ysize/2];
 
 			_gridmarker = _gridmarker + [_marker];
 
