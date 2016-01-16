@@ -43,7 +43,7 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={8990.2383,38.715714,11888.773};
+					position[]={10058.827,22.73629,11349.601};
 					id=0;
 					side="WEST";
 					vehicle="B_Soldier_F";
@@ -52,17 +52,6 @@ class Mission
 					skill=0.60000002;
 				};
 			};
-		};
-	};
-	class Markers
-	{
-		items=1;
-		class Item0
-		{
-			position[]={8947.9189,66.371948,11849.531};
-			name="center";
-			text="center sector";
-			type="mil_destroy";
 		};
 	};
 };
