@@ -32,12 +32,12 @@
 		Create a new grid object
 
 		Parameters:
-			xgrid - x grid pos
-			ygrid - y grid pos
-			xgridsize - grid width
-			ygridsize - grid height
-			xsectorsize - sector width
-			ysectorsize - sector height
+			xgrid - x grid pos - scalar
+			ygrid - y grid pos - scalar
+			xgridsize - grid width - scalar
+			ygridsize - grid height - scalar
+			xsectorsize - sector width - scalar
+			ysectorsize - sector height - scalar
 		*/
 		PUBLIC FUNCTION("array","constructor") {
 			MEMBER("xgrid", _this select 0);
