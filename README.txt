@@ -1,6 +1,6 @@
 	/*
 	Author: code34 nicolas_boiteux@yahoo.fr
-	Copyright (C) 2014 Nicolas BOITEUX
+	Copyright (C) 2014-2018 Nicolas BOITEUX
 
 	CLASS OO_GRID STRATEGIC GRID
 	
@@ -31,6 +31,8 @@
 	You can share, modify, distribute this script but don't remove the licence and the name of the original author
 
 	logs:
+		
+		0.5	- improve performance
 		0.4 	
 			- improve performance
 			- add direct translation for around methods
