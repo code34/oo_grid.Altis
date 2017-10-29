@@ -2,9 +2,11 @@
 
 		_grid = ["new", [0,0,31000,31000,100,100]] call OO_GRID;
 
-		sleep 2;
+		while { true } do {
+			hint format ["player sector %1", ["getSectorFromPos", position player] call _grid];
+			sleep 1;
+		};
 
-		hint format ["player sector %1", ["getSectorFromPos", position player] call _grid];
 
 		
 
