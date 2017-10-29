@@ -32,6 +32,7 @@
 
 	logs:
 		
+		0.6	- fix private keywords, tune use case
 		0.5	- improve performance
 		0.4 	
 			- improve performance
