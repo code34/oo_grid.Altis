@@ -291,6 +291,17 @@
 			_positions;
 		};
 
+		// Check distance cost between tow sectors
+		PUBLIC FUNCTION("array", "GetEstimateCost") {
+			private _start = _this select 0;	
+			private _goal = _this select 1;
+
+			private _dx = abs((_start select 0) - (_goal select 0));
+			private _dy = abs((_start select 1) - (_goal select 1));
+
+			_dy max _dx;
+		};	
+
 		PUBLIC FUNCTION("","deconstructor") { 
 			DELETE_VARIABLE("xgrid");
 			DELETE_VARIABLE("ygrid");
