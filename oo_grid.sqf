@@ -40,6 +40,7 @@
 			ysectorsize - sector height - scalar
 		*/
 		PUBLIC FUNCTION("array","constructor") {
+			DEBUG(#, "OO_GRID::constructor")
 			MEMBER("xgrid", _this select 0);
 			MEMBER("ygrid", _this select 1);
 			MEMBER("xgridsize", _this select 2);
@@ -49,26 +50,32 @@
 		};
 
 		PUBLIC FUNCTION("scalar","setXgrid") {
+			DEBUG(#, "OO_GRID::setXgrid")
 			MEMBER("xgrid", _this);
 		};
 
 		PUBLIC FUNCTION("scalar","setYgrid") {
+			DEBUG(#, "OO_GRID::setYgrid")
 			MEMBER("ygrid", _this);
 		};
 
 		PUBLIC FUNCTION("scalar","setXgridsize") {
+			DEBUG(#, "OO_GRID::setXgridsize")
 			MEMBER("xgridsize", _this);
 		};
 
 		PUBLIC FUNCTION("scalar","setYgridsize") {
+			DEBUG(#, "OO_GRID::setYgridsize")
 			MEMBER("ygridsize", _this);
 		};
 
 		PUBLIC FUNCTION("scalar","setXsectorsize") {
+			DEBUG(#, "OO_GRID::setXsectorsize")
 			MEMBER("xsectorsize", _this);
 		};
 
 		PUBLIC FUNCTION("scalar","setYsectorsize") {
+			DEBUG(#, "OO_GRID::setYsectorsize")
 			MEMBER("ysectorsize", _this);
 		};
 
@@ -86,6 +93,7 @@
 			_this : function name - string
 		*/ 
 		PUBLIC FUNCTION("string", "parseAllSectors") {
+			DEBUG(#, "OO_GRID::parseAllSector")
 			private _x = 0;
 			private _y = 0;
 			private _sector = [];
@@ -112,6 +120,7 @@
 		Return : array of sectors
 		*/
 		PUBLIC FUNCTION("array", "parseSectors") {
+			DEBUG(#, "OO_GRID::parseSectors")
 			private _result = [];
 			{
 				if(MEMBER((_this select 1), _x)) then {
@@ -128,6 +137,7 @@
 		Return : sector : array
 		*/
 		PUBLIC FUNCTION("array", "getSectorFromPos") {
+			DEBUG(#, "OO_GRID::getSectorFromPos")
 			private _xpos = floor(((_this select 0) - MEMBER("xgrid",nil)) / MEMBER("xsectorsize", nil));
 			private _ypos = floor(((_this select 1) - MEMBER("ygrid",nil)) / MEMBER("ysectorsize", nil));
 			[_xpos, _ypos];
@@ -138,7 +148,8 @@
 		Parameters: array - sector array
 		Return : array position
 		*/
-		PUBLIC FUNCTION("array", "getPosFromSector") {		
+		PUBLIC FUNCTION("array", "getPosFromSector") {	
+			DEBUG(#, "OO_GRID::getPosFromSector")	
 			private _x = ((_this select 0) * MEMBER("xsectorsize", nil)) + (MEMBER("xsectorsize", nil) / 2) + MEMBER("xgrid", nil);
 			private _y = ((_this select 1) * MEMBER("ysectorsize", nil)) + (MEMBER("ysectorsize", nil) / 2)+ MEMBER("ygrid", nil);;
 			[_x,_y];
@@ -150,6 +161,7 @@
 		Return : array position of the sector center
 		*/
 		PUBLIC FUNCTION("array", "getSectorCenterPos") {
+			DEBUG(#, "OO_GRID::getSectorCenterPos")	
 			MEMBER("getPosFromSector", MEMBER("getSectorFromPos", _this));
 		};
 
@@ -159,6 +171,7 @@
 		Return : array containing all sectors
 		*/		
 		PUBLIC FUNCTION("array", "getSectorsAroundSector") {
+			DEBUG(#, "OO_GRID::getSectorsAroundSector")	
 			private _grid = [
 				[(_this select 0) -1, (_this select 1) - 1],
 				[(_this select 0), (_this select 1) - 1],
@@ -178,6 +191,7 @@
 		Return : array containing all sectors
 		*/		
 		PUBLIC FUNCTION("array", "getSectorsAroundPos") {
+			DEBUG(#, "OO_GRID::getSectorsAroundPos")
 			MEMBER("getSectorsAroundSector", MEMBER("getSectorFromPos", _this));
 		};
 
@@ -189,6 +203,7 @@
 		Return : array containing all sectors
 		*/
 		PUBLIC FUNCTION("array", "getSectorsCrossAroundSector") {
+			DEBUG(#, "OO_GRID::getSectorsCrossAroundSector")
 			private _grid = [
 				[(_this select 0), (_this select 1) - 1],
 				[(_this select 0)-1, (_this select 1)],
@@ -204,6 +219,7 @@
 		Return : array containing all sectors
 		*/
 		PUBLIC FUNCTION("array", "getSectorsCrossAroundPos") {
+			DEBUG(#, "OO_GRID::getSectorsCrossAroundPos")
 			MEMBER("getSectorsCrossAroundSector", MEMBER("getSectorFromPos", _this));
 		};
 
@@ -216,6 +232,7 @@
 		Return : array containing all sectors
 		*/
 		PUBLIC FUNCTION("array", "getAllSectorsAroundSector") {
+			DEBUG(#, "OO_GRID::getAllSectorsAroundSector")
 			private _botx = ((_this select 0) select 0) - (_this select 1);
 			private _boty = ((_this select 0) select 1) - (_this select 1);
 			private _topx = ((_this select 0) select 0) + (_this select 1);
@@ -241,6 +258,7 @@
 		Return : array containing all sectors
 		*/
 		PUBLIC FUNCTION("array", "getAllSectorsAroundPos") {
+			DEBUG(#, "OO_GRID::getAllSectorsAroundPos")
 			private _array = [MEMBER("getSectorFromPos", _this select 0), _this select 1];
 			MEMBER("getAllSectorsAroundSector", _array);
 		};
@@ -251,6 +269,7 @@
 		Return : boolean
 		*/		
 		PUBLIC FUNCTION("array", "hasBuildingsAtSector") {
+			DEBUG(#, "OO_GRID::hasBuildingsAtSector")
 			private _positions = MEMBER("getPositionsBuilding", MEMBER("getPosFromSector", _this));
 			if (count _positions > 10) then { true;} else { false;};
 		};
@@ -261,6 +280,7 @@
 		Return : boolean
 		*/	
 		PUBLIC FUNCTION("array", "hasBuildingsAtPos") {
+			DEBUG(#, "OO_GRID::hasBuildingsAtPos")
 			if(count MEMBER("getPositionsBuilding", _this) > 10) then { true;} else { false;};
 		};
 
@@ -271,6 +291,7 @@
 		Return : array containing all positions in building
 		*/
 		PUBLIC FUNCTION("array", "getPositionsBuilding") {
+			DEBUG(#, "OO_GRID::getPositionsBuilding")
 			private _positions = [];
 			private _buildings = [];
 			private _index = 0;
@@ -293,6 +314,7 @@
 
 		// Check distance cost between tow sectors
 		PUBLIC FUNCTION("array", "GetEstimateCost") {
+			DEBUG(#, "OO_GRID::GetEstimateCost")
 			private _start = _this select 0;	
 			private _goal = _this select 1;
 
@@ -303,6 +325,7 @@
 		};	
 
 		PUBLIC FUNCTION("","deconstructor") { 
+			DEBUG(#, "OO_GRID::deconstructor")
 			DELETE_VARIABLE("xgrid");
 			DELETE_VARIABLE("ygrid");
 			DELETE_VARIABLE("xgridsize");
