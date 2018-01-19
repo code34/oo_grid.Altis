@@ -123,10 +123,8 @@
 			DEBUG(#, "OO_GRID::parseSectors")
 			private _result = [];
 			{
-				if(MEMBER((_this select 1), _x)) then {
-					_result pushback _x;
-				};
-			} foreach (_this select 0);
+				if(MEMBER((_this select 1), _x)) then { 	_result pushback _x; }; true;
+			} count (_this select 0);
 			_result;
 		};
 
@@ -301,7 +299,7 @@
 				sleep 0.5;
 				{
 					_index = 0;
-					while { !(format ["%1", _x buildingPos _index] isEqualTo "[0,0,0]") } do {
+					while { !((_x buildingPos _index) isEqualTo [0,0,0]) } do {
 						_positions pushBack (_x buildingPos _index);
 						_index = _index + 1;
 						sleep 0.0001;
